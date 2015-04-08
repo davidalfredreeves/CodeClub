@@ -1,4 +1,4 @@
-#List of functions for problem set #2
+## List of functions for Problem Set #2
 
 ## Problem 2 - Remove
 def remove(someList, someNumber):
@@ -57,16 +57,17 @@ def clubEntry(name, guestList):
         return False
 
 ## Problem 9 - Hanoi
-
+    
 ## Problem 10 - Encode
-encrypt = {"a":"00", "b":"01", "c":"02", "d":"03", "e":"04", "f":"05", "g":"06", "h":"07", "i":"08", "j":"09"}
-decrypt = {"00":"a", "01":"b", "02":"c", "03":"d", "04":"e", "05":"f", "06":"g", "07":"h", "08":"i", "09":"j"}
+
+encryptKey = {"a":"00", "b":"01", "c":"02", "d":"03", "e":"04", "f":"05", "g":"06", "h":"07", "i":"08", "j":"09"}
+decryptKey = {"00":"a", "01":"b", "02":"c", "03":"d", "04":"e", "05":"f", "06":"g", "07":"h", "08":"i", "09":"j"}
     
 def encode(string):
     newString = ""
     for each in string.lower():
-        if each in encrypt:
-            newString = newString + encrypt[each]
+        if each in encryptKey:
+            newString = newString + encryptKey[each]
         else:
             newString = newString + each
     return newString
@@ -80,8 +81,66 @@ def decode(string):
         string = string[2:]
     #return string, newList
     for each in newList:
-        if each in decrypt:
-            newString = newString + decrypt[each]
+        if each in decryptKey:
+            newString = newString + decryptKey[each]
         else:
             newString = newString + each
     return newString
+
+## Problem 12 - Ecrypt
+def encrypt(word, key):
+    if type(key) is int:
+        (key) = (key,)
+    while len(key) < len(word):
+        key *= 2
+    stringKey = ""
+    for each in key:
+        stringKey += str(each)
+    newList = []
+    count = 0
+    count2 = 0
+    while count < len(word):
+        if word[count] == "0":
+            newList.append(word[count])
+        else:
+            newList.append(int(word[count]) + int(key[count2]))
+            count2 += 1
+        count += 1
+    newWord = ""
+    char = ""
+    for each in newList:
+        if type(each) is str:
+            newWord = newWord + each
+        else:
+            newWord = newWord + str(each)
+    return newWord
+
+## Problem 13 - Decrypt
+def decrypt(word, key):
+    if type(key) is int:
+        (key) = (key,)
+    while len(key) < len(word):
+        key *= 2
+    stringKey = ""
+    for each in key:
+        stringKey += str(each)
+    newList = []
+    count = 0
+    count2 = 0
+    while count < len(word):
+        if word[count] == "0":
+            newList.append(word[count])
+        else:
+            newList.append(int(word[count]) - int(key[count2]))
+            count2 += 1
+        count += 1
+    newWord = ""
+    char = ""
+    for each in newList:
+        if type(each) is str:
+            newWord = newWord + each
+        else:
+            newWord = newWord + str(each)
+    return newWord
+
+

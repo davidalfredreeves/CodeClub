@@ -73,49 +73,10 @@ print(functions.decode("0001000308030400")) # abadidea
 print(functions.decode("00010203040506070809")) # abcdefghij
 print(functions.decode("t0708s08s0005ull00n0302ompl04t04s04nt04n0204")) # thisisafullandcompletesentence
 
+## Problem 12 - encrypt
+print(functions.encrypt("01020304", (4,5,1,2))) # 05070406
+print(functions.encrypt("07030509", (2))) # 090507011
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Problem 13 - decrypt
+print(functions.decrypt("05070406", (4,5,1,2))) # 01020304
+print(functions.decrypt("090507011", (2))) # 07030509
