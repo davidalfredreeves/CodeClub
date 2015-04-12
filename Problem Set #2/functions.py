@@ -57,9 +57,14 @@ def clubEntry(name, guestList):
         return False
 
 ## Problem 9 - Hanoi
+##base case = 1
+def hanoi(number):
+    if number == 1:
+        return 1
+    else:
+        return 2* (hanoi(number-1)) + 1
     
 ## Problem 10 - Encode
-
 encryptKey = {"a":"00", "b":"01", "c":"02", "d":"03", "e":"04", "f":"05", "g":"06", "h":"07", "i":"08", "j":"09"}
 decryptKey = {"00":"a", "01":"b", "02":"c", "03":"d", "04":"e", "05":"f", "06":"g", "07":"h", "08":"i", "09":"j"}
     
@@ -143,4 +148,13 @@ def decrypt(word, key):
             newWord = newWord + str(each)
     return newWord
 
+## Problem 14 - Hailstone numbers
+def hailNum(number):
+    if number == 1:
+        return [1]
+    if number % 2 == 0:
+        return [number] + hailNum(number//2)
+    else:
+        return [number] + hailNum((number * 3)+1)
 
+    
