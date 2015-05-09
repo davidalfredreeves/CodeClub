@@ -1,3 +1,5 @@
+from collections import Counter
+
 class Echo:
     """Returns the string entered into it, or returns an error
     if a non-string was entered."""
@@ -204,3 +206,219 @@ class Manager(Employee):
         """Gives a new employee to a manager"""
         self.underlings.append(employee.name)
         employee.manager = self.name
+
+class Fraction:
+
+    def __init__(self, numerator, denominator):
+        self.numerator = numerator
+        self.denominator = denominator
+        self.tempNumerator = self.numerator
+        self.tempDenominator = self.denominator
+
+    def lcm(x, y):
+        """This function takes two integers and
+        returns the lowest common multilpe."""
+        if x > y:
+            greater = x
+        else:
+            greater = y
+        while(True):
+            if ((greater % x == 0) and (greater % y == 0)):
+                lcm = greater
+                break
+            greater += 1
+        return lcm
+
+    def get_next_prime_factor(n):
+        if n % 2 == 0:
+            return 2
+        for x in range(3,n//2,2):
+            if n % x == 0:
+                return x
+        return n
+
+    def all_prime_factors(number):
+        primeList = []
+        while number != 1:
+            nextPrime = Fraction.get_next_prime_factor(number)
+            primeList.append(nextPrime)
+            number = number // nextPrime
+        return primeList
+
+    def remove_common_elements(list1, list2):
+        a = Counter(list1)
+        b = Counter(list2)
+        c = list((a-b).elements())
+        d = list((b-a).elements())
+        return c, d
+
+    def multiply(list):
+        total = 1
+        for each in list:
+            total *= each
+        return total
+
+    def simplify(numerator, denominator):
+        numList = Fraction.all_prime_factors(numerator)
+        denList = Fraction.all_prime_factors(denominator)
+        newNumList, newDenList = Fraction.remove_common_elements(numList, denList)
+        newNumerator = Fraction.multiply(newNumList)
+        newDenominator = Fraction.multiply(newDenList)
+        return newNumerator, newDenominator
+
+    def overload(number1, number2):
+        if number1 >= number2:
+            return True
+        else:
+            return False
+
+    def reduce(numerator, denominator):
+        count = 0
+        while numerator >= denominator:
+            numerator = numerator - denominator
+            count += 1
+        return count, numerator
+
+    def __str__(self):
+        self.tempNumerator, self.tempDenominator = Fraction.simplify(self.numerator
+                                                            , self.denominator)
+        if Fraction.overload(self.tempNumerator, self.tempDenominator) == False:
+            return str(self.tempNumerator) + "/" + str(self.tempDenominator)
+        else:
+            integer = Fraction.reduce(self.tempNumerator, self.tempDenominator)[0]
+            newNumerator = Fraction.reduce(self.tempNumerator, self.tempDenominator)[1]
+            if newNumerator > 0:
+                return str(integer) + " " + str(newNumerator) + "/" + str(self.tempDenominator)
+            else:
+                return str(integer)
+    def total(numerator, denominator):
+        numerator, denominator = Fraction.simplify(numerator, denominator)
+        if Fraction.overload(numerator, denominator) == False:
+            return str(numerator) + "/" + str(denominator)
+        else:
+            integer = Fraction.reduce(numerator, denominator)[0]
+            newNumerator = Fraction.reduce(numerator, denominator)[1]
+            if newNumerator > 0:
+                return str(integer) + " " + str(newNumerator) + "/" + str(denominator)
+            else:
+                return str(integer)
+
+    def __add__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        newNumerator = self.numerator + other.numerator
+        self.numerator = self.tempNumerator
+        self.denominator = self.tempDenominator
+        return Fraction.total(newNumerator, newDenominator)
+
+    def __sub__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        newNumerator = self.numerator - other.numerator
+        self.numerator = self.tempNumerator
+        self.denominator = self.tempDenominator
+        return Fraction.total(newNumerator, newDenominator)
+
+    def __mul__(self, other):
+        newNumerator = self.numerator * other.numerator
+        newDenominator = self.denominator * other.denominator
+        self.numerator = self.tempNumerator
+        self.denominator = self.tempDenominator
+        return Fraction.total(newNumerator, newDenominator)
+
+    def __truediv__(self, other):
+        newOtherNumerator = other.denominator
+        newOtherDenominator = other.numerator
+        newNumerator = self.numerator * newOtherNumerator
+        newDenominator = self.denominator * newOtherDenominator
+        self.numerator = self.tempNumerator
+        self.denominator = self.tempDenominator
+        return Fraction.total(newNumerator, newDenominator)
+
+    def __gt__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        if self.numerator > other.numerator:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return True
+        else:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return False
+
+    def __ge__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        if self.numerator >= other.numerator:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return True
+        else:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return False
+
+    def __eq__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        if self.numerator == other.numerator:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return True
+        else:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return False
+
+    def __le__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        if self.numerator <= other.numerator:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return True
+        else:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return False
+
+    def __lt__(self, other):
+        if self.denominator == other.denominator:
+            newDenominator = self.denominator
+        else:
+            newDenominator = Fraction.lcm(self.denominator, other.denominator)
+        self.numerator = self.numerator * (newDenominator // self.denominator)
+        other.numerator = other.numerator * (newDenominator // other.denominator)
+        if self.numerator < other.numerator:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return True
+        else:
+            self.numerator = self.tempNumerator
+            self.denominator = self.tempDenominator
+            return False
