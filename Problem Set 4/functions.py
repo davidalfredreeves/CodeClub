@@ -1,6 +1,8 @@
 import datetime
 import random
 from os import walk
+from os import rename
+import os
 
 def inputint(number):
     while True:
@@ -60,5 +62,15 @@ def get_files(path):
          break
     return(files)
 
+def bulk_rename(folder, name):
+    files = get_files(folder)
+    #print(files)
+    os.chdir(folder)
+    i = 1
+    for file in files:
+        #print(file)
+        rename(file, name + str(i) + ".txt")
+        i += 1
+    os.chdir("..")
 
 

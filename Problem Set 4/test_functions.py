@@ -29,3 +29,5 @@ print("EXPECTED: 'Please enter a date in the dd/mm/yyyy format, and as a string.
 print(functions.randomSample(["1", "2", "3", "4", "5"], 3))
 
 print(functions.get_files("testFolder"))
+functions.bulk_rename("testFolder", "example")
+print(functions.get_files("testFolder"))
