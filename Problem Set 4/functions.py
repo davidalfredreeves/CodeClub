@@ -3,6 +3,7 @@ import random
 from os import walk
 from os import rename
 import os
+import csv
 
 def inputint(number):
     while True:
@@ -64,13 +65,29 @@ def get_files(path):
 
 def bulk_rename(folder, name):
     files = get_files(folder)
-    #print(files)
     os.chdir(folder)
     i = 1
     for file in files:
-        #print(file)
         rename(file, name + str(i) + ".txt")
         i += 1
     os.chdir("..")
 
+def csvtodict(file):
 
+    col_names = ["Name", "Age", "Gender"]
+    input_file = csv.DictReader(open(file, "r"), fieldnames=col_names, delimiter=",")
+    for row in input_file:
+        print("'" + str(col_names[0]) + "'" + "=" + "'" + \
+              str(row[col_names[0]]) + "'" + "'" +\
+              "'" + str(col_names[1]) + "'" + "=" +\
+              str(row[col_names[1]]) + "'" \
+              "'" + str(col_names[2]) + "'" + "=" + "'" + \
+              str(row[col_names[2]]) + "'")
+        
+f = open("Test.csv", mode = "w")
+f.write("Name,Age,Gender\n")
+f.write("Jamie,29,Male\n")
+f.write("Alice,25,Female\n")
+f.close()
+
+print(csvtodict("Test.csv"))
